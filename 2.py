@@ -22,7 +22,7 @@ class CloudAgent:
         Returns:
             bool: True if change was approved successfully
         """
-        if change_description:
+        if change_description and isinstance(change_description, str) and change_description.strip():
             self.approved_changes.append(change_description)
             print(f"✓ {self.name}: 變更已認可 (Change approved) - {change_description}")
             return True
@@ -36,8 +36,11 @@ class CloudAgent:
             task_description (str): Description of the task to delegate
         
         Returns:
-            dict: Result of the delegation
+            dict: Result of the delegation, or None if task is invalid
         """
+        if not task_description or not isinstance(task_description, str) or not task_description.strip():
+            return None
+        
         result = {
             "status": "delegated",
             "task": task_description,
